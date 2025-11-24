@@ -28,9 +28,21 @@ def create_app():
         
     return Markup('<br>'.join(escape(s).splitlines()))
 
+@app.route('/')
+def index():
+    page = request.args.get('page',1,type=int)
+    per_page = 5
+    Items = Item.query.order_by(Item.created_at.desc()).paginate(page=page,per_page=per_page )
+    return render_template('list.html', Items=Items)
+
+    return app 
+
 
 if __name__=='__main__':
     create_app().run(debug=True)   
+
+
+
 
 
 
