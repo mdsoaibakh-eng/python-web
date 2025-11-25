@@ -3,18 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <title>Zaix</title>
 </head>
 <body>
-    <h1>hellow world</h1>
-    <h2>this is python web pase</h2>
-    <h5>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Assumenda corrupti
-         aperiam rerum excepturi nesciunt dolorem quisquam ducimus cumque, quam 
-         deleniti quibusdam, tempore temporibus aspernatur velit voluptatum autem.
-         Quaerat, iure dolores.</h5>
-         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum nisi suscipit iure.
-             Doloremque molestiae sapiente, amet optio in sunt iure nulla maiores eum ad odio
-              cum modi asperiores
-             possimus earum!</p>
+   <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="{{ url_for('index') }}">FlaskCRUD</a>
+      <div>
+        <a class="btn btn-outline" href="{{ url_for('create') }}">+ New Item</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashes">
+          {% for category, msg in messages %}
+            <div class="flash {{ category }}">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <h1>Items</h1>
+    <div class="grid">
+      {% for item in items.items %}
+      <article class="card">
+        <h3 class="card-title">{{ item.title }}</h3>
+        <p class="muted small">{{ item.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+        <p class="card-body">{{ item.description}}</p>
+        <div class="card-actions">
+          <a class="btn btn-sm" href="{{ url_for('detail', item_id=item.id) }}">View</a>
+          <a class="btn btn-sm btn-outline" href="{{ url_for('edit', item_id=item.id) }}">Edit</a>
+          <form method="post" action="{{ url_for('delete', item_id=item.id) }}" onsubmit="return confirm('Delete this item?');" style="display:inline;">
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+          </form>
+        </div>
+      </article>
+      {% else %}
+        <p>No items yet. <a href="{{ url_for('create') }}">Create one</a>.</p>
+      {% endfor %}
+    </div>
+
+    <div class="pagination">
+      {% if items.has_prev %}
+        <a href="{{ url_for('index', page=items.prev_num) }}" class="btn btn-outline">← Prev</a>
+      {% endif %}
+      <span class="muted">Page {{ items.page }} of {{ items.pages }}</span>
+      {% if items.has_next %}
+        <a href="{{ url_for('index', page=items.next_num) }}" class="btn btn-outline">Next →</a>
+      {% endif %}
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© Demo CRUD</div>
+  </footer>
 </body>
 </html>

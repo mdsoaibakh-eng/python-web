@@ -6,14 +6,31 @@
     <title>Document</title>
 </head>
 <body>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum similique,
-     voluptates ipsum maiores nisi molestias praesentium architecto voluptas
-      perspiciatis sed mollitia dolorum totam voluptate fugiat. Perferendis dolorum 
-      velit 
-    sint officiis.
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptate suscipit eius 
-    in illum sapiente qui. Ullam temporibus iure possimus! Repellat dolorem incidunt 
-    dolore saepe, eveniet quisquam fugit
-     consectetur quae soluta.
+   <main class="container">
+ {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flashes">
+            {% for category, msg in messages %}
+            <div class="flash {{ category }}">{{ msg }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+
+    <article class="detail">
+        <h1> {{ item.title }}</h1>  </article>
+        <p class="muted small">{{ item.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+        <div class="body"> {{ item.description | nl2br }}</div>
+
+        <div class="actions"> 
+          <a class="btn" href="{{ url_for('edit', item_id=item.id) }}">Edit</a>
+          <a class="btn btn-outline"  href="{{ url_for('index') }}">Back </a>
+
+          <form method="post" action="{{ url_for('delete', item_id=item.id) }}" onsubmit="return confirm('Delete this item?');" style="display:inline;">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </div>
+    </article>
+   </main>
 </body>
 </html>
