@@ -1,3 +1,4 @@
+from curses import wrapper
 import os
 from flask import Flask, render_template, redirect, url_for, flash, request, session
 from dotenv import load_dotenv
@@ -5,6 +6,15 @@ from models import db, Item, Admin
 from markupsafe import Markup, escape
 
 load_dotenv()
+def login_required(f):
+    from functools import wraps
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if 'admin_id' not in session:
+            flash('Please log in as admin.', 'error')
+            return redirect(url_for('admin_login'))
+        return f(*args, **kwargs)
+    return wrapper
 
 def create_app():
     app = Flask(__name__, template_folder='templates', static_folder='static')
@@ -25,48 +35,59 @@ def create_app():
 # ##############################################
 #       ADMIN AUTHENTICATION
 #################################################
-@app.route("/admin/register", methods=["GET", "POST"])
-def register():
-    if request.method == "POST":
-        username = (request.form.get("username") or "").strip()
-        password = (request.form.get("password") or "").strip()
+    @app.route("/admin/register", methods=["GET", "POST"])
+    def register():
+        if request.method == "POST":
+            username = (request.form.get("username") or "").strip()
+            password = (request.form.get("password") or "").strip()
 
+        
+            if not username  or not password:
+                flash("Username and password are required.", "error")
+                return render_template("admin_register.html")
+            
+            if Admin .query.filter_by(username=username).first():
+                flash("Username already exists.", "error")
+                return render_template("admin_register.html")
+            
+            admin = Admin (username=username)
+            admin.set_password(password)
+            db.session.add(admin)
+            db.session.commit()
+            flash("Admin registered successfully.", "success")
+            return redirect(url_for("admin_login"))
+        return render_template("admin_register.html")
+
+    @app.route("/admin/login", methods=["GET", "POST"])
+    def admin_login():
+        if request.method == "POST":
+            username = (request.form.get("username") or "").strip()
+            password = (request.form.get("password") or "").strip()
+
+            admin = Admin .query.filter_by(username=username).first()
+            if admin is None or not admin.check_password(password):
+                flash("Invalid username or password.", "error")
+                return render_template("admin_login.html")
+            
+            session["admin_id"] = admin.id
+            flash("Logged in successfully.", "success")
+        return redirect(url_for("index"))
     
-        if not username  or not password:
-            flash("Username and password are required.", "error")
-            return render_template("admin_register.html")
-        
-        if Admin .query.filter_by(username=username).first():
-            flash("Username already exists.", "error")
-            return render_template("admin_register.html")
-        
-        admin = Admin (username=username)
-        admin.set_password(password)
-        db.session.add(admin)
-        db.session.commit()
-        flash("Admin registered successfully.", "success")
-        return redirect(url_for("admin_login"))
-    return render_template("admin_register.html")
-
-@app.route("/admin/login", methods=["GET", "POST"])
-def admin_login():
-    if request.method == "POST":
-        username = (request.form.get("username") or "").strip()
-        password = (request.form.get("password") or "").strip()
-
-        admin = Admin .query.filter_by(username=username).first()
-        if admin is None or not admin.check_password(password):
-            flash("Invalid username or password.", "error")
-            return render_template("admin_login.html")
-        
-        session["admin_id"] = admin.id
-        flash("Logged in successfully.", "success")
+    @app.route("/admin/logout")
+    def logout():
+        session.pop("admin_id", None)
+        flash("Logged out .", "info")
         return redirect(url_for("index"))
 
+# ##########################################################
 
+# Public Views
+
+# ########################################################
 
 
     @app.route('/')
+   # @login_required
     def index():
         page = request.args.get('page', 1, type=int)
         per_page = 6
@@ -79,6 +100,7 @@ def admin_login():
         return render_template('detail.html', item=item)
 
     @app.route('/create', methods=['GET', 'POST'])
+    @login_required
     def create():
         if request.method == 'POST':
             title = (request.form.get('title') or '').strip()
@@ -101,6 +123,7 @@ def admin_login():
         return render_template('create.html', title='', description='')
 
     @app.route('/edit/<int:item_id>', methods=['GET', 'POST'])
+    @login_required
     def edit(item_id):
         item = Item.query.get_or_404(item_id)
         if request.method == 'POST':
@@ -124,6 +147,8 @@ def admin_login():
         return render_template('edit.html', item=item, title=item.title, description=item.description or '')
 
     @app.route('/delete/<int:item_id>', methods=['POST'])
+    @login_required
+
     def delete(item_id):
         item = Item.query.get_or_404(item_id)
         db.session.delete(item)

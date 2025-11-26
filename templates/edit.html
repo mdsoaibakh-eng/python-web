@@ -3,9 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <title>Document</title>
 </head>
 <body>
+ <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="{{ url_for('index') }}">FlaskCRUD</a>
+      <div>
+        <a class="btn btn-outline" href="{{ url_for('create') }}">+ New Item</a>
+        <a class="btn btn-outline" href="{{ url_for('logout') }}">Logout</a>
+      </div>
+    </div>
+  </nav>
+
      <main class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}

@@ -3,7 +3,7 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 db = SQLAlchemy()
 
-class Item(db.Model):
+class Admin(db.Model):
     __tablename__ = 'admins'
     id = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -19,10 +19,10 @@ class Item(db.Model):
     def __repr__(self):
         return f'<Admin {self.username}>'
     
-    class Item(db.Model):
+class Item(db.Model):
         __tablename__ = 'items'
         id = db.Column(db.Integer, primary_key=True)
-        name = db.Column(db.String(100), nullable=False)
+        title = db.Column(db.String(100), nullable=False)
         description = db.Column(db.Text, nullable=True)
         price = db.Column(db.Float, nullable=False)
         created_at = db.Column(db.DateTime, default=datetime.utcnow)
