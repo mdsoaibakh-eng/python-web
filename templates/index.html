@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Build Mart - Your One-Stop Shop{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>BUILD</h1>
+        <p>Your One-Stop Shop for all quality Building Materials at affordable pricing.</p>
+    </div>
+</section>
+
+<section class="categories-section">
+    <div class="grid categories-grid">
+        <!-- Waterproofing solutions -->
+        <div class="category-card">
+            <h3>Waterproofing solutions</h3>
+            <div class="image-placeholder">
+                <img src="{{ url_for('static', filename='images/ss.png') }}" alt="Waterproofing solutions" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-text" style="display:none;">Add Image Here</div>
+            </div>
+            <div class="brand-logo">
+                <img src="{{ url_for('static', filename='images/dr_fixit.jp') }}" alt="Dr. Fixit" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <!-- Cements -->
+        <div class="category-card">
+            <h3>Cements</h3>
+            <div class="image-placeholder">
+                <img src="{{ url_for('static', filename='images/cement.jpg') }}" alt="Cements" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-text" style="display:none;">nooooooooo</div>
+            </div>
+        </div>
+
+        <!-- TMT BARS -->
+        <div class="category-card">
+            <h3>TMT BARS</h3>
+            <div class="image-placeholder">
+                <img src="{{ url_for('static', filename='images/iron.webp') }}" alt="TMT BARS" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-text" style="display:none;">Add Image Here</div>
+            </div>
+             <div class="brand-logo">
+                <img src="{{ url_for('static', filename='images/tata.png') }}" alt="Tata Tiscon" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <!-- Sanitary wares -->
+        <div class="category-card">
+            <h3>Sanitary wares</h3>
+            <div class="image-placeholder">
+                <img src="{{ url_for('static', filename='images/sanitary.png') }}" alt="Sanitary wares" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-text" style="display:none;">Add Image Here</div>
+            </div>
+        </div>
+
+        <!-- Paints -->
+        <div class="category-card">
+            <h3>Paints</h3>
+            <div class="brand-logo">
+                <img src="{{ url_for('static', filename='images/paint.webp') }}" alt="Asian Paints" onerror="this.style.display='none'">
+            </div>
+            <p>Range Of Interior Emulsion</p>
+            <div class="image-placeholder">
+                <img src="{{ url_for('static', filename='images/paint.webp') }}" alt="Paints" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-text" style="display:none;">Add Image Here</div>
+            </div>
+        </div>
+
+        <!-- Tiles -->
+        <div class="category-card">
+            <h3>Tiles</h3>
+            <div class="image-placeholder">
+                <img src="{{ url_for('static', filename='images/tiles.png') }}" alt="Tiles" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-text" style="display:none;">Add Image Here</div>
+            </div>
+            <a href="#" class="see-more">See more</a>
+        </div>
+
+        <!-- Ropes -->
+        <div class="category-card">
+            <h3>Ropes</h3>
+            <div class="image-placeholder">
+                <img src="{{ url_for('static', filename='images/ropes.png') }}" alt="Ropes" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-text" style="display:none;">Add Image Here</div>
+            </div>
+            <a href="#" class="see-more">See more</a>
+        </div>
+
+        <!-- Machinery Tools -->
+        <div class="category-card">
+            <h3>Machinery Tools</h3>
+            <div class="image-placeholder">
+                <img src="{{ url_for('static', filename='images/tools.png') }}" alt="Machinery Tools" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-text" style="display:none;">Add Image Here</div>
+            </div>
+            <a href="#" class="see-more">See more</a>
+        </div>
+    </div>
+</section>
+
+<section class="bottom-categories">
+    <div class="container grid bottom-grid">
+        <div class="bottom-card">
+            <h3>Electric items</h3>
+            <div class="image-placeholder">
+                <img src="{{ url_for('static', filename='images/electric.png') }}" alt="Electric items" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-text" style="display:none;">Add Image Here</div>
+            </div>
+        </div>
+        <div class="bottom-card">
+            <h3>Plumbing solutions</h3>
+            <div class="image-placeholder">
+                <img src="{{ url_for('static', filename='images/plumbing.png') }}" alt="Plumbing solutions" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-text" style="display:none;">Add Image Here</div>
+            </div>
+        </div>
+        <div class="bottom-card">
+            <h3>roofing sheets</h3>
+            <div class="image-placeholder">
+                <img src="{{ url_for('static', filename='images/roofing.png') }}" alt="roofing sheets" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-text" style="display:none;">Add Image Here</div>
+            </div>
+        </div>
+        <div class="bottom-card">
+            <h3>Iron pipes</h3>
+            <div class="image-placeholder">
+                <img src="{{ url_for('static', filename='images/pipes.png') }}" alt="Iron pipes" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-text" style="display:none;">Add Image Here</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="map-section">
+    <div class="map-container">
+        <!-- Placeholder for Google Map -->
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3580.697428809986!2d85.3789!3d26.1738!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDEwJzI1LjciTiA4NcKwMjInNDQuMCJF!5e0!3m2!1sen!2sin!4v1631234567890!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+</section>
+{% endblock %}

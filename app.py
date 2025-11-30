@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, redirect, url_for, flash, request, session
 from dotenv import load_dotenv
-from models import db, Event, Admin, Student, Registration
+from models import db, Product, Admin, User, Registration
 from markupsafe import Markup, escape
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -22,15 +22,15 @@ def admin_login_required(f):
     return wrapper
 
 # ===========================
-# Student Login Required
+# USER Login Required
 # ===========================
-def student_login_required(f):
+def user_login_required(f):
     from functools import wraps
     @wraps(f)
     def wrapper(*args, **kwargs):
-        if not session.get("student_id"):
-            flash("Please log in as a student.", "error")
-            return redirect(url_for("student_login"))
+        if not session.get("user_id"):
+            flash("Please log in as a user.", "error")
+            return redirect(url_for("user_login"))
         return f(*args, **kwargs)
     return wrapper
 
@@ -40,7 +40,7 @@ def student_login_required(f):
 # ===========================
 def create_app():
     app = Flask(__name__, template_folder='templates', static_folder='static')
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'fallback-secret')
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', '123456')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -115,11 +115,11 @@ def create_app():
         return redirect(url_for("index"))
 
     # ###############################################################
-    # STUDENT AUTHINCATION
+    # USER AUTHENTICATION
     # ######################################################################
 
-    @app.route("/student/register", methods=["GET", "POST"])
-    def student_register():
+    @app.route("/user/register", methods=["GET", "POST"])
+    def user_register():
         if request.method == "POST":
             username = request.form.get("username").strip()
             email = request.form.get("email").strip()
@@ -127,83 +127,83 @@ def create_app():
 
             if not username or not email or not password:
                 flash("All fields are required.", "error")
-                return render_template("student_register.html")
+                return render_template("user_register.html")
 
-            if Student.query.filter_by(username=username).first() or Student.query.filter_by(email=email).first():
+            if User.query.filter_by(username=username).first() or User.query.filter_by(email=email).first():
                 flash("Username or email already taken.", "error")
-                return render_template("student_register.html")
+                return render_template("user_register.html")
 
-            student = Student(username=username, email=email)
-            student.set_password(password)
-            db.session.add(student)
+            user = User(username=username, email=email)
+            user.set_password(password)
+            db.session.add(user)
             db.session.commit()
 
             flash("Registered successfully. Please login.", "success")
-            return redirect(url_for("student_login"))
+            return redirect(url_for("user_login"))
 
-        return render_template("student_register.html")
+        return render_template("user_register.html")
 
-    @app.route("/student/login", methods=["GET", "POST"])
-    def student_login():
+    @app.route("/user/login", methods=["GET", "POST"])
+    def user_login():
         if request.method == "POST":
             username = request.form.get("username").strip()
             password = request.form.get("password").strip()
 
-            student = Student.query.filter_by(username=username).first()
+            user = User.query.filter_by(username=username).first()
 
-            if not student or not student.check_password(password):
+            if not user or not user.check_password(password):
                 flash("Invalid username or password.", "error")
-                return render_template("student_login.html")
+                return render_template("user_login.html")
 
             session.clear()
-            session["student_id"] = student.id
+            session["user_id"] = user.id
 
             flash("Logged in successfully.", "success")
-            return redirect(url_for("student_dashboard"))
+            return redirect(url_for("user_dashboard"))
 
-        return render_template("student_login.html")
+        return render_template("user_login.html")
 
-    @app.route("/student/logout")
-    def student_logout():
-        session.pop("student_id", None)
+    @app.route("/user/logout")
+    def user_logout():
+        session.pop("user_id", None)
         flash("Logged out.", "info")
         return redirect(url_for("index"))
 
 
     # #####################################################
-    # EVENT REGISTRATION
+    # PRODUCT REGISTRATION
     # ########################################################
 
-    @app.route("/student/register_event/<int:event_id>", methods=["POST"])
-    @student_login_required
-    def register_event(event_id):
-        student = Student.query.get(session["student_id"])
-        event = Event.query.get_or_404(event_id)
+    @app.route("/user/register_products/<int:products_id>", methods=["POST"])
+    @user_login_required
+    def register_products(products_id):
+        user = User.query.get(session["user_id"])
+        products = Product.query.get_or_404(products_id)
 
         # Check if already registered
-        existing_reg = Registration.query.filter_by(student_id=student.id, event_id=event.id).first()
+        existing_reg = Registration.query.filter_by(user_id=user.id, products_id=products.id).first()
         if existing_reg:
-            flash("You are already registered for this event.", "info")
-            return redirect(url_for("detail", event_id=event.id))
+            flash("You are already registered for this products.", "info")
+            return redirect(url_for("detail", products_id=products.id))
 
-        registration = Registration(student_id=student.id, event_id=event.id)
+        registration = Registration(user_id=user.id, products_id=products.id)
         db.session.add(registration)
         db.session.commit()
 
-        flash("Registered for event successfully.", "success")
-        return redirect(url_for("student_dashboard"))
+        flash("Registered for products successfully.", "success")
+        return redirect(url_for("user_dashboard"))
 
 
     # ################################################
-    # STUDENT DASHBOARD
+    # USER DASHBOARD
     # ####################################################
 
-    @app.route("/student/dashboard")
-    @student_login_required
-    def student_dashboard():
-        student = Student.query.get(session["student_id"])
-        registrations = student.registrations
-        return render_template("student_dashboard.html", student=student, registrations=registrations)
+    @app.route("/user/dashboard")
+    @user_login_required
+    def user_dashboard():
+        user = User.query.get(session["user_id"])
+        registrations = user.registrations
+        return render_template("user_dashboard.html", user=user, registrations=registrations)
 
 
     # ##########################################
@@ -229,30 +229,30 @@ def create_app():
 
 
     # ##########################################
-    # PUBLIC EVENT VIEWS
+    # PUBLIC PRODUCT VIEWS
     # ################################################
 
     @app.route("/")
     def index():
-        page = request.args.get("page", 1, type=int)
-        per_page = 6
-        events = Event.query.order_by(Event.date.asc()).paginate(page=page, per_page=per_page, error_out=False)
-        return render_template("list.html", events=events)
+        # page = request.args.get("page", 1, type=int)
+        # per_page = 6
+        # products = Product.query.order_by(Product.date.asc()).paginate(page=page, per_page=per_page, error_out=False)
+        return render_template("index.html")
 
-    @app.route("/event/<int:event_id>")
-    def detail(event_id):
-        event = Event.query.get_or_404(event_id)
+    @app.route("/products/<int:products_id>")
+    def detail(products_id):
+        products = Product.query.get_or_404(products_id)
         is_registered = False
-        if session.get("student_id"):
-            student_id = session.get("student_id")
-            if Registration.query.filter_by(student_id=student_id, event_id=event.id).first():
+        if session.get("user_id"):
+            user_id = session.get("user_id")
+            if Registration.query.filter_by(user_id=user_id, products_id=products.id).first():
                 is_registered = True
         
-        return render_template("detail.html", event=event, is_registered=is_registered)
+        return render_template("detail.html", products=products, is_registered=is_registered)
 
 
     # #######################################
-    # ADMIN CRUD (EVENTS)
+    # ADMIN CRUD (PRODUCTS)
     # ############################################
 
     @app.route("/create", methods=["GET", "POST"])
@@ -269,24 +269,24 @@ def create_app():
                 return render_template("create.html", title=title, description=description, location=location, date=date_str)
 
             try:
-                event_date = datetime.strptime(date_str, '%Y-%m-%dT%H:%M')
+                products_date = datetime.strptime(date_str, '%Y-%m-%dT%H:%M')
             except ValueError:
                 flash("Invalid date format.", "error")
                 return render_template("create.html", title=title, description=description, location=location, date=date_str)
 
-            event = Event(title=title, description=description, location=location, date=event_date)
-            db.session.add(event)
+            products = Product(title=title, description=description, location=location, date=products_date)
+            db.session.add(products)
             db.session.commit()
 
-            flash("Event created successfully.", "success")
+            flash("Product created successfully.", "success")
             return redirect(url_for("index"))
 
         return render_template("create.html", title="", description="", location="", date="")
 
-    @app.route("/edit/<int:event_id>", methods=["GET", "POST"])
+    @app.route("/edit/<int:products_id>", methods=["GET", "POST"])
     @admin_login_required
-    def edit(event_id):
-        event = Event.query.get_or_404(event_id)
+    def edit(products_id):
+        products = Product.query.get_or_404(products_id)
 
         if request.method == "POST":
             title = (request.form.get("title") or "").strip()
@@ -296,34 +296,49 @@ def create_app():
 
             if not title or not location or not date_str:
                 flash("Title, Location and Date are required.", "error")
-                return render_template("edit.html", event=event)
+                return render_template("edit.html", products=products)
 
             try:
-                event_date = datetime.strptime(date_str, '%Y-%m-%dT%H:%M')
+                products_date = datetime.strptime(date_str, '%Y-%m-%dT%H:%M')
             except ValueError:
                 flash("Invalid date format.", "error")
-                return render_template("edit.html", event=event)
+                return render_template("edit.html", products=products)
 
-            event.title = title
-            event.description = description
-            event.location = location
-            event.date = event_date
+            products.title = title
+            products.description = description
+            products.location = location
+            products.date = products_date
 
             db.session.commit()
 
-            flash("Event updated.", "success")
-            return redirect(url_for("detail", event_id=event.id))
+            flash("Product updated.", "success")
+            return redirect(url_for("detail", products_id=products.id))
 
-        return render_template("edit.html", event=event)
+        return render_template("edit.html", products=products)
 
-    @app.route("/delete/<int:event_id>", methods=["POST"])
+    @app.route("/delete/<int:products_id>", methods=["POST"])
     @admin_login_required
-    def delete(event_id):
-        event = Event.query.get_or_404(event_id)
-        db.session.delete(event)
+    def delete(products_id):
+        products = Product.query.get_or_404(products_id)
+        db.session.delete(products)
         db.session.commit()
-        flash("Event deleted.", "info")
+        flash("Product deleted.", "info")
         return redirect(url_for("index"))
+    
+       # ===========================
+    # ESTIMATE PAGE
+    # ===========================
+    @app.route("/estimate")
+    def estimate():
+        return render_template("estimate.html")
+    
+    # ===========================
+    # About Us
+    # ===========================
+    @app.route("/about")
+    def about():
+        return render_template("about.html")
+ 
 
     @app.errorhandler(404)
     def not_found(e):

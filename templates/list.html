@@ -1,48 +1,48 @@
 {% extends "base.html" %}
 
-{% block title %}Upcoming Events - CampusEvents{% endblock %}
+{% block title %}Upcoming Products - Product{% endblock %}
 
 {% block content %}
 <div class="hero">
-  <h1>Upcoming Events</h1>
-  <p>Discover and register for the latest campus activities.</p>
+  <h1>Upcoming Products</h1>
+  <p>Discover and register for the latest Product activities.</p>
 </div>
 
 <div class="grid">
-  {% for event in events.items %}
-  <article class="card event-card">
+  {% for products in products.items %}
+  <article class="card product-card">
     <div class="card-header">
-      <span class="event-date">{{ event.date.strftime('%b %d, %Y') }}</span>
-      <span class="event-time">{{ event.date.strftime('%I:%M %p') }}</span>
+      <span class="event-date">{{ products.date.strftime('%b %d, %Y') }}</span>
+      <span class="event-time">{{ products.date.strftime('%I:%M %p') }}</span>
     </div>
     <div class="card-body">
-      <h3 class="card-title">{{ event.title }}</h3>
-      <p class="event-location">📍 {{ event.location }}</p>
-      <p class="event-desc">{{ event.description[:100] }}{% if event.description|length > 100 %}…{% endif %}</p>
+      <h3 class="card-title">{{ products.title }}</h3>
+      <p class="event-location">📍 {{ products.location }}</p>
+      <p class="event-desc">{{ products.description[:100] }}{% if products.description|length > 100 %}…{% endif %}</p>
     </div>
     <div class="card-actions">
-      <a class="btn btn-primary" href="{{ url_for('detail', event_id=event.id) }}">View Details</a>
+      <a class="btn btn-primary" href="{{ url_for('detail', products_id=products.id) }}">View Details</a>
       {% if session.get('admin_id') %}
-      <a class="btn btn-sm btn-outline" href="{{ url_for('edit', event_id=event.id) }}">Edit</a>
-      <form method="post" action="{{ url_for('delete', event_id=event.id) }}"
-        onsubmit="return confirm('Delete this event?');" style="display:inline;">
+      <a class="btn btn-sm btn-outline" href="{{ url_for('edit', products_id=products.id) }}">Edit</a>
+      <form method="post" action="{{ url_for('delete', products_id=products.id) }}"
+        onsubmit="return confirm('Delete this product?');" style="display:inline;">
         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
       </form>
       {% endif %}
     </div>
   </article>
   {% else %}
-  <p class="no-events">No upcoming events found. Stay tuned!</p>
+  <p class="no-events">No upcoming products found. Stay tuned!</p>
   {% endfor %}
 </div>
 
 <div class="pagination">
-  {% if events.has_prev %}
-  <a href="{{ url_for('index', page=events.prev_num) }}" class="btn btn-outline">← Prev</a>
+  {% if products.has_prev %}
+  <a href="{{ url_for('index', page=products.prev_num) }}" class="btn btn-outline">← Prev</a>
   {% endif %}
-  <span class="muted">Page {{ events.page }} of {{ events.pages }}</span>
-  {% if events.has_next %}
-  <a href="{{ url_for('index', page=events.next_num) }}" class="btn btn-outline">Next →</a>
+  <span class="muted">Page {{ products.page }} of {{ products.pages }}</span>
+  {% if products.has_next %}
+  <a href="{{ url_for('index', page=products.next_num) }}" class="btn btn-outline">Next →</a>
   {% endif %}
 </div>
 {% endblock %}

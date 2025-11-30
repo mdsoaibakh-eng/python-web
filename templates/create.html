@@ -1,33 +1,33 @@
 {% extends "base.html" %}
 
-{% block title %}Create Event - CampusEvents{% endblock %}
+{% block title %}Create Product - Product{% endblock %}
 
 {% block content %}
 <div class="form-container">
-  <h1>Create New Event</h1>
+  <h1>Create New Product</h1>
   <form method="post">
     <div class="form-group">
-      <label for="title">Event Title</label>
+      <label for="title">Product Title</label>
       <input type="text" name="title" id="title" value="{{ title }}" required class="form-control">
     </div>
 
     <div class="form-group">
-      <label for="date">Date & Time</label>
+      <label for="date">Product Date & Time</label>
       <input type="datetime-local" name="date" id="date" value="{{ date }}" required class="form-control">
     </div>
 
     <div class="form-group">
-      <label for="location">Location</label>
+      <label for="location">Product Location</label>
       <input type="text" name="location" id="location" value="{{ location }}" required class="form-control">
     </div>
 
     <div class="form-group">
-      <label for="description">Description</label>
+      <label for="description">Product Description</label>
       <textarea name="description" id="description" rows="5" class="form-control">{{ description }}</textarea>
     </div>
 
     <div class="form-actions">
-      <button type="submit" class="btn btn-primary">Create Event</button>
+      <button type="submit" class="btn btn-primary">Create Product</button>
       <a href="{{ url_for('index') }}" class="btn btn-text">Cancel</a>
     </div>
   </form>

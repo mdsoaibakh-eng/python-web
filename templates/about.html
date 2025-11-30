@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build Mart</title>
+    <style>
+      
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 10px 30px;
+            background-color: rgb(82, 145, 171);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-img {
+            height: 60px;
+            width: auto;
+            transition: transform 0.3s ease-in; 
+            background: white; 
+            border-radius: 5px;
+        }
+        .logo-img:hover { transform: scale(1.1); }
+
+        .nav-links {
+            list-style: none; 
+            margin: 0;
+            padding: 0;
+            display: flex; 
+            gap: 25px; 
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff; 
+            font-weight: bold;
+            font-size: 16px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent; 
+            transition: all 0.3s ease-in;
+        }
+
+        .nav-links a:hover { border-bottom: 2px solid #fff; }
+
+      
+        .hero-section {
+        
+            min-height: 110vh; 
+            width: 100%;
+            
+            background-image: url("images/blackboard.webp"); 
+            background-size: cover;
+            background-position: center;
+            
+         
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            padding: 20px;
+        }
+
+        .hero-msg {
+            background-color:grey; 
+            padding: 50px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 700px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .hero-msg p {
+            font-size: 28px; 
+            color: #333;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* --- FOOTER STYLES --- */
+        .main-footer {
+            background-color: #333;
+            color: white;
+            padding: 50px 20px 20px;
+            width: 100%;
+            
+            position: relative; 
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .footer-col { flex: 1; min-width: 250px; }
+        
+        .footer-logo { width: 100px; border-radius: 5px; margin-bottom: 15px; }
+        
+        .footer-col h3 { color: rgb(82, 145, 171); margin-bottom: 15px; }
+        .footer-col p { line-height: 1.6; color: #ccc; }
+
+        .social-links { margin-top: 15px; }
+        .social-icon img { width: 30px; height: 30px; margin-right: 10px; filter: invert(1); }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #555;
+            color: #aaa;
+            font-size: 0.9em;
+        }
+        .footer-bottom a { color: white; text-decoration: none; }
+
+        /* --- RESPONSIVENESS --- */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column; 
+                gap: 15px;
+            }
+            .hero-msg {
+                padding: 30px;
+            }
+            .footer-container { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+
+  <div class="left">
+    <a href="{{ url_for('index') }}">
+      <img src="static/images/buildlogo.jpg" alt="Website Logo" class="logo-img">
+    </a>
+  </div>
+
+  <nav class="mid navbar">
+    <ul class="nav-links"> 
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Go Home</a>
+
+      <li><a href="#">About Us</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="hero-section"> 
+    <div class="hero-msg">
+        <p><b>Welcome to Build Mart , we had been in the Construction business since 2004 aiming to provide quality construction material at a competitive market price. we aim to deliver the product safely and timily at your doorstep. </b></p>
+    </div>
+</div> 
+
+<footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-col footer-brand">
+            <img src="images/buildlogo.jpg" alt="Build Mart Logo" class="footer-logo">
+            <p>Your trusted partner for quality building materials since 2002. Building your dreams from the ground up.</p>
+            <div class="social-links">
+                <a href="#" class="social-icon"><img src="images/facebook-icon.png" alt="Facebook"></a>
+                <a href="#" class="social-icon"><img src="images/instagram-icon.png" alt="Instagram"></a>
+            </div>
+        </div>
+
+        <div class="footer-col footer-contact-info">
+            <h3>Contact Info</h3>
+            <p>📞 +91 6203876690</p>
+            <p>✉️ Buildmart1211@gmail.com</p>
+            <p>📍 Build Mart, Muzaffarpur, Bihar, Pincode-844127</p>
+            <p>🕒 Mon - Sat: 9:00 AM - 6:00 PM</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2025 Build Mart. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a></p>
+    </div>
+</footer>
+
+</body>
+</html>

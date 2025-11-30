@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Manage Registrations - CampusEvents{% endblock %}
+{% block title %}Manage Registrations - Product{% endblock %}
 
 {% block content %}
 <div class="dashboard-header">
-    <h1>Event Registrations</h1>
-    <p>Manage student registrations for events.</p>
+    <h1>Product Registrations</h1>
+    <p>Manage user registrations for products.</p>
 </div>
 
 <div class="registrations-list">
@@ -14,8 +14,8 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Student</th>
-                    <th>Event</th>
+                    <th>User</th>
+                    <th>Product</th>
                     <th>Date</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -25,11 +25,11 @@
                 {% for reg in registrations %}
                 <tr>
                     <td>
-                        <strong>{{ reg.student.username }}</strong><br>
-                        <small class="muted">{{ reg.student.email }}</small>
+                        <strong>{{ reg.user.username }}</strong><br>
+                        <small class="muted">{{ reg.user.email }}</small>
                     </td>
-                    <td>{{ reg.event.title }}</td>
-                    <td>{{ reg.event.date.strftime('%b %d, %Y') }}</td>
+                    <td>{{ reg.products.title }}</td>
+                    <td>{{ reg.products.date.strftime('%b %d, %Y') }}</td>
                     <td>
                         <span class="status-badge status-{{ reg.status.lower() }}">{{ reg.status }}</span>
                     </td>

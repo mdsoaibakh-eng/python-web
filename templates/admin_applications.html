@@ -33,8 +33,8 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Student</th>
-      <th>Resume</th>
+      <th>NEW USER</th>
+      <th>RECEPT</th>
       <th>Status</th>
       <th>Approve</th>
     </tr>
@@ -43,7 +43,7 @@
   <tbody>
     {% for app in applications %}
     <tr>
-      <td>{{ app.student.username }}</td>
+      <td>{{ app.user.username }}</td>
       <td>
         <a href="{{ url_for('static', filename='uploads/' ~ app.resume_filename) }}" target="_blank">
           View Resume

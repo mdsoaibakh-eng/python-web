@@ -4,38 +4,62 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>{% block title %}College Events{% endblock %}</title>
+    <title>{% block title %}Build Mart{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
     <nav class="nav">
         <div class="container nav-inner">
-            <a class="brand" href="{{ url_for('index') }}">CampusEvents</a>
-            <div class="nav-links">
+            <div class="nav-left">
+                <a class="brand" href="{{ url_for('index') }}">
+                    <div class="logo-placeholder">
+                        <i class="fas fa-home"></i>
+                        <div class="brand-text">
+                            <span>BUILD</span>
+                            <span class="small">MART</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="nav-center">
+                <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                <a class="nav-link" href="{{ url_for('about') }}">About Us</a>
+                <a class="nav-link" href="{{ url_for('estimate') }}">Estimate Calculator</a>
+                <a class="nav-link" href="#contact-footer">Contact Us</a>
+            </div>
+
+            <div class="nav-right">
                 {% if session.get('admin_id') %}
-                <a class="nav-link" href="{{ url_for('create') }}">+ New Event</a>
+                <a class="nav-link" href="{{ url_for('create') }}">+ New Product</a>
                 <a class="nav-link" href="{{ url_for('admin_view_registrations') }}">Registrations</a>
                 <a class="btn btn-outline" href="{{ url_for('logout') }}">Logout (Admin)</a>
-                {% elif session.get('student_id') %}
-                <a class="nav-link" href="{{ url_for('student_dashboard') }}">My Dashboard</a>
-                <a class="btn btn-outline" href="{{ url_for('student_logout') }}">Logout</a>
+                {% elif session.get('user_id') %}
+                <a class="nav-link" href="{{ url_for('user_dashboard') }}">My Dashboard</a>
+                <a class="btn btn-outline" href="{{ url_for('user_logout') }}">Logout</a>
                 {% else %}
-                <a class="nav-link" href="{{ url_for('student_login') }}">Student Login</a>
-                <a class="btn btn-outline" href="{{ url_for('admin_login') }}">Admin Login</a>
+                <a class="btn btn-outline" href="{{ url_for('user_login') }}">Login</a>
+                <a class="btn btn-primary" href="{{ url_for('user_register') }}">Sign Up</a>
+                <a class="btn btn-text btn-sm" href="{{ url_for('admin_login') }}"
+                    style="font-size: 12px; margin-left: 5px;">Admin</a>
                 {% endif %}
             </div>
         </div>
     </nav>
 
-    <main class="container">
+    <main>
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-        <div class="flashes">
-            {% for category, msg in messages %}
-            <div class="flash {{ category }}">{{ msg }}</div>
-            {% endfor %}
+        <div class="container">
+            <div class="flashes">
+                {% for category, msg in messages %}
+                <div class="flash {{ category }}">{{ msg }}</div>
+                {% endfor %}
+            </div>
         </div>
         {% endif %}
         {% endwith %}
@@ -43,8 +67,62 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="footer">
-        <div class="container">© {{ 2025 }} All rights reserved By CampusEvents and Md Soaib.</div>
+    <footer class="footer" id="contact-footer">
+        <div class="container footer-inner">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <i class="fas fa-home"></i> Build Mart Logo
+                </div>
+                <p class="footer-desc">Your trusted partner for quality building materials since 2002. Building your
+                    dreams from the ground up.</p>
+                <div class="social-links">
+                    <a href="#"><img src="{{ url_for('static', filename='images/facebook.png') }}" alt="Facebook"
+                            onerror="this.style.display='none'"></a>
+                    <a href="#"><img src="{{ url_for('static', filename='images/instagram.png') }}" alt="Instagram"
+                            onerror="this.style.display='none'"></a>
+                    <a href="#"><img src="{{ url_for('static', filename='images/linkedin.png') }}" alt="LinkedIn"
+                            onerror="this.style.display='none'"></a>
+                </div>
+            </div>
+
+            <div class="footer-center">
+                <h3>Contact Info</h3>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i> +91 6203876690
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i> Buildmart1211@gmail.com
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i> Build Mart, Muzaffarpur, Bihar, Pincode-844127
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i> Mon - Sat: 9:00 AM - 6:00 PM
+                </div>
+            </div>
+
+            <div class="footer-right">
+                <h3>Request a Quote</h3>
+                <form class="quote-form">
+                    <div class="form-row">
+                        <input type="text" placeholder="Your Name" class="form-control">
+                        <input type="email" placeholder="Your Email" class="form-control">
+                    </div>
+                    <div class="form-row">
+                        <input type="tel" placeholder="Contact No." class="form-control">
+                        <input type="text" placeholder="Address" class="form-control">
+                    </div>
+                    <textarea placeholder="Your Requirement / Message" class="form-control"></textarea>
+                    <button type="submit" class="btn btn-primary">Send Inquiry</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                © 2025 Build Mart. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms &
+                    Conditions</a>
+            </div>
+        </div>
     </footer>
 </body>
 
